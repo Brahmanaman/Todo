@@ -1,7 +1,7 @@
 import { MdSearch } from "react-icons/md";
 import { MdAddCircle } from "react-icons/md";
 
-const Search = () => {
+const Search = ({ onOpen }) => {
   return (
     <>
       <div className="my-4 mx-1 flex items-center justify-between gap-3">
@@ -15,7 +15,10 @@ const Search = () => {
             className="bg-transparent border border-white rounded py-2 px-4 text-white text-xl pl-10 outline-0 w-full"
           />
         </div>
-        <MdAddCircle className="text-white text-6xl cursor-pointer" />
+        <MdAddCircle
+          onClick={onOpen}
+          className="text-white text-6xl cursor-pointer"
+        />
       </div>
     </>
   );
