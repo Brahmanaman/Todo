@@ -1,16 +1,16 @@
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { Field, Form, Formik } from "formik";
-import React from "react";
 import { createPortal } from "react-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { db } from "../config/firebase";
-import { Toast } from "@chakra-ui/react";
+import { toast } from "react-toastify";
 
 const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
   const addTodo = async (todo) => {
     try {
       await addDoc(collection(db, "todos"), todo);
-      alert("todo added successfully");
+      onClose();
+      toast.success("todo added successfully");
     } catch (error) {
       console.log(error);
     }
@@ -19,7 +19,8 @@ const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
   const updateTodo = async (todo, id) => {
     try {
       await updateDoc(doc(db, "todos", id), todo);
-      alert("todo updated successfully");
+      onClose();
+      toast.success("todo updated successfully");
     } catch (error) {
       console.log(error);
     }
@@ -28,11 +29,11 @@ const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
   return createPortal(
     <>
       {isOpen && (
-        <>
-          <div className="min-h-50 max-w-[80%] bg-white z-50 relative m-auto">
+        <div className="h-screen w-full backdrop-blur-xs absolute top-0 left-0 z-40 grid place-items-center">
+          <div className="min-h-50 min-w-[80%] md:min-w-[20%] bg-[radial-gradient(at_0%_60%,#440138,#061041_75%)] z-50 relative m-auto rounded-md">
             <div className="flex justify-end p-1">
               <AiOutlineClose
-                className="text-2xl cursor-pointer"
+                className="text-2xl cursor-pointer text-white"
                 onClick={onClose}
               />
             </div>
@@ -56,17 +57,21 @@ const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
               >
                 <Form className="flex flex-col gap-3">
                   <div className="flex flex-col gap-1">
-                    <label htmlFor="task">Task</label>
+                    <label className="text-white" htmlFor="task">
+                      Task
+                    </label>
                     <Field
                       name="task"
-                      className="border border-gray-950 p-1 rounded"
+                      className="border border-white p-1 rounded text-white"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <label htmlFor="description">Description</label>
+                    <label className="text-white" htmlFor="description">
+                      Description
+                    </label>
                     <Field
                       name="description"
-                      className="border border-gray-950 p-1 rounded"
+                      className="border border-white p-1 rounded text-white"
                     />
                   </div>
                   <button
@@ -79,11 +84,7 @@ const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
               </Formik>
             </div>
           </div>
-          <div
-            onClick={onClose}
-            className="h-screen w-screen backdrop-blur-xs absolute top-0 left-0 z-40"
-          />
-        </>
+        </div>
       )}
     </>,
     document.getElementById("modal-root")

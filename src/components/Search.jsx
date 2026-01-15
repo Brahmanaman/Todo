@@ -1,7 +1,7 @@
 import { MdSearch } from "react-icons/md";
 import { MdAddCircle } from "react-icons/md";
 
-const Search = ({ onOpen }) => {
+const Search = ({ onOpen, filterContacts }) => {
   return (
     <>
       <div className="my-4 mx-1 flex items-center justify-between gap-3">
@@ -12,6 +12,7 @@ const Search = ({ onOpen }) => {
             name="search"
             id="search"
             placeholder="Search Todo"
+            onChange={filterContacts}
             className="bg-transparent border border-white rounded py-2 px-4 text-white text-xl pl-10 outline-0 w-full"
           />
         </div>

@@ -3,12 +3,14 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { useState } from "react";
 import AddUpdateTodo from "./AddUpdateTodo";
+import { toast } from "react-toastify";
 
 const Todo = ({ todos }) => {
   const [editingTodo, setEditingTodo] = useState(null);
   const deleteTodo = async (id) => {
     try {
       await deleteDoc(doc(db, "todos", id));
+      toast.success("todo deleted successfully");
     } catch (error) {
       console.log(error);
     }
@@ -18,24 +20,24 @@ const Todo = ({ todos }) => {
     <>
       {todos.length > 0 ? (
         <>
-          <div className="my-4 mx-1 flex flex-col gap-3">
+          <div className="py-4 px-1 flex flex-col gap-3 max-h-[75vh] overflow-y-auto ">
             {todos.map((todo) => {
               return (
                 <div
                   key={todo.id}
-                  className="bg-yellow flex items-center justify-between rounded p-2"
+                  className="bg-white/5 backdrop-blur-3xl border border-white/20 flex items-center justify-between rounded p-2"
                 >
                   <div className="flex gap-2">
                     <LuListTodo className="text-orange text-5xl" />
                     <div className="flex flex-col items-start justify-center ">
-                      <h5 className="text-black font-semibold text-2xl">
+                      <h5 className="text-white font-semibold text-2xl">
                         {todo.task.length > 15
-                          ? todo.task.substring(1, 16) + "..."
+                          ? todo.task.substring(0, 16) + "..."
                           : todo.task}
                       </h5>
-                      <p className="text-black -mt-1">
+                      <p className="text-white -mt-1">
                         {todo.description.length > 15
-                          ? todo.description.substring(1, 25) + "..."
+                          ? todo.description.substring(0, 25) + "..."
                           : todo.description}
                       </p>
                     </div>
