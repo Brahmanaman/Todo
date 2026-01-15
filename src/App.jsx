@@ -13,7 +13,7 @@ const App = () => {
   useEffect(() => {
     const getTodos = async () => {
       try {
-        const todoSnapshot = await getDocs(collection(db, "contacts"));
+        const todoSnapshot = await getDocs(collection(db, "todos"));
         const data = todoSnapshot.docs.map((doc) => {
           return {
             id: doc.id,

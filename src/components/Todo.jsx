@@ -14,9 +14,9 @@ const Todo = ({ todos }) => {
                 <LuListTodo className="text-orange text-5xl" />
                 <div className="flex flex-col items-start justify-center ">
                   <h5 className="text-black font-semibold text-2xl">
-                    {contact.name}
+                    {contact.todo}
                   </h5>
-                  <p className="text-black -mt-1">{contact.email}</p>
+                  <p className="text-black -mt-1">{contact.description}</p>
                 </div>
                 <img
                   className="cursor-pointer"
