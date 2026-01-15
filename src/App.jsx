@@ -5,10 +5,11 @@ import { db } from "./config/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import Todo from "./components/Todo";
 import AddUpdateTodo from "./components/AddUpdateTodo";
+import toggleModal from "./hooks/toggleModal";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const { onOpen, onClose, isOpen } = toggleModal();
 
   useEffect(() => {
     const getTodos = async () => {
@@ -26,14 +27,6 @@ const App = () => {
 
     getTodos();
   }, []);
-
-  const onOpen = () => {
-    setIsOpen(true);
-  };
-
-  const onClose = () => {
-    setIsOpen(false);
-  };
 
   return (
     <div className="max-w-92.5 mx-auto">

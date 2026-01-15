@@ -1,14 +1,25 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import { createPortal } from "react-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { db } from "../config/firebase";
+import { Toast } from "@chakra-ui/react";
 
-const AddUpdateTodo = ({ isOpen, onClose }) => {
+const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
   const addTodo = async (todo) => {
     try {
       await addDoc(collection(db, "todos"), todo);
+      alert("todo added successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateTodo = async (todo, id) => {
+    try {
+      await updateDoc(doc(db, "todos", id), todo);
+      alert("todo updated successfully");
     } catch (error) {
       console.log(error);
     }
@@ -27,12 +38,19 @@ const AddUpdateTodo = ({ isOpen, onClose }) => {
             </div>
             <div className="px-4 py-2">
               <Formik
-                initialValues={{
-                  task: "",
-                  description: "",
-                }}
+                initialValues={
+                  isUpdate
+                    ? {
+                        task: data.task,
+                        description: data.description,
+                      }
+                    : {
+                        task: "",
+                        description: "",
+                      }
+                }
                 onSubmit={(values) => {
-                  addTodo(values);
+                  isUpdate ? updateTodo(values, data.id) : addTodo(values);
                   console.log(values);
                 }}
               >
@@ -55,7 +73,7 @@ const AddUpdateTodo = ({ isOpen, onClose }) => {
                     type="submit"
                     className="bg-orange w-fit py-2 px-4 rounded font-semibold cursor-pointer self-center active:scale-95 hover:bg-orange-500 transition"
                   >
-                    Add Todo
+                    {isUpdate ? "Update" : "Add"} Todo
                   </button>
                 </Form>
               </Formik>
