@@ -1,9 +1,14 @@
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { createPortal } from "react-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { db } from "../config/firebase";
 import { toast } from "react-toastify";
+import * as Yup from "yup";
+
+const todoSchemaValidation = Yup.object().shape({
+  task: Yup.string().required("Task is required"),
+});
 
 const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
   const addTodo = async (todo) => {
@@ -39,6 +44,7 @@ const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
             </div>
             <div className="px-4 py-2">
               <Formik
+                validationSchema={todoSchemaValidation}
                 initialValues={
                   isUpdate
                     ? {
@@ -64,6 +70,9 @@ const AddUpdateTodo = ({ isOpen, onClose, isUpdate, data }) => {
                       name="task"
                       className="border border-white p-1 rounded text-white"
                     />
+                    <div className="text-red-500">
+                      <ErrorMessage name="task" />
+                    </div>
                   </div>
                   <div className="flex flex-col gap-1">
                     <label className="text-white" htmlFor="description">
